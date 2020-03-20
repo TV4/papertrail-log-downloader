@@ -1,5 +1,9 @@
 # Papertrail log downloader
 
+## Requirements
+
+GNU parallel (`brew install parallel`)
+
 ## Usage
 
 `./download-papertrail-logs <papertrail token>`

@@ -8,11 +8,8 @@ if [ "$papertrail_token" = "" ]; then
     exit 1
 fi
 
-
 number_of_hours_in_a_year=8670
 
 seq 1 $number_of_hours_in_a_year | \
     xargs -I {} date -u -v-{}H +%Y-%m-%d-%H | \
-    xargs -I {} sh -c "echo {}; curl -sS -f --no-include -o {}.tsv.gz \
-        -L -H \"X-Papertrail-Token: ${papertrail_token}\" \
-        https://papertrailapp.com/api/v1/archives/{}/download"
+    parallel -v --max-procs 4 curl -sS -f --no-include -o {}.tsv.gz -L -H \"X-Papertrail-Token: ${papertrail_token}\" https://papertrailapp.com/api/v1/archives/{}/download
